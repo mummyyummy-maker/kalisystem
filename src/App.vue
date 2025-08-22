@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from "vue-router";
 import HelloWorld from "@/components/HelloWorld.vue";
+import MadeByDyad from "./components/MadeByDyad.vue";
 </script>
 
 <template>
@@ -12,10 +13,8 @@ import HelloWorld from "@/components/HelloWorld.vue";
       width="125"
       height="125"
     />
-
     <div class="wrapper">
       <HelloWorld msg="You did it!" />
-
       <nav>
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/about">About</RouterLink>
@@ -24,6 +23,8 @@ import HelloWorld from "@/components/HelloWorld.vue";
   </header>
 
   <RouterView />
+
+  <MadeByDyad />
 </template>
 
 <style scoped>
