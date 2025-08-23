@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { RouterView } from "vue-router";
-import MadeByDyad from "./components/MadeByDyad.vue";
+import { RouterView } from 'vue-router';
+import MadeWithDyad from './components/MadeWithDyad.vue';
 </script>
 
 <template>
@@ -8,7 +8,7 @@ import MadeByDyad from "./components/MadeByDyad.vue";
     <main class="main-content">
       <RouterView />
     </main>
-    <MadeByDyad />
+    <MadeWithDyad />
   </div>
 </template>
 
