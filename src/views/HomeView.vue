@@ -19,7 +19,6 @@ main {
 }
 
 h1 {
-  color: var(--color-heading);
   font-weight: 500;
   margin: 0;
   font-size: 2rem;
