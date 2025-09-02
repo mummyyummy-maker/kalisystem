@@ -1,7 +1,7 @@
 {
   "name": "dyad-vue-template",
   "description": "Dyad Vuejs Template",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "private": true,
   "type": "module",
   "engines": {
@@ -24,6 +24,7 @@
     "embla-carousel-vue": "^8.6.0",
     "lucide-vue-next": "^0.541.0",
     "pinia": "^3.0.3",
+    "radix-vue": "^1.9.17",
     "reka-ui": "^2.4.1",
     "tailwind-merge": "^3.3.1",
     "vaul-vue": "^0.4.1",
