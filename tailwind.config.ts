@@ -2,7 +2,7 @@ import type { Config } from 'tailwindcss';
 
 export default {
   darkMode: ['class'],
-  content: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
+  content: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx,mdx}'],
   theme: {
     extend: {
       colors: {
@@ -68,12 +68,12 @@ export default {
             height: '0',
           },
           to: {
-            height: 'var(--reka-accordion-content-height)',
+            height: 'var(--radix-accordion-content-height)',
           },
         },
         'accordion-up': {
           from: {
-            height: 'var(--reka-accordion-content-height)',
+            height: 'var(--radix-accordion-content-height)',
           },
           to: {
             height: '0',
