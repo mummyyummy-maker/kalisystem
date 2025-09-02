@@ -6,32 +6,35 @@ This document outlines the technology stack and specific library usage guideline
 
 The application is built using the following core technologies:
 
-- **Framework**: Vue with Composition API
+- **Framework**: Vue with Composition API & `<script setup>` syntax
 - **Language**: TypeScript
 - **Build Tool**: Vite
-- **UI Components**: Reka UI + Shadcn/UI Vue components
-- **Styling**: Tailwind CSS
+- **UI Components**: Reka UI (v2+) + Shadcn/UI Vue components
+- **Styling**: Tailwind CSS with tailwindcss-animate plugin
 - **State Management**: Pinia
-- **Forms**: VeeValidate + Zod validation
+- **Forms & Validation**: VeeValidate + Zod
 - **Notifications/Toasts**: Vue Sonner
-- **Charts**: Vue Chart.js + @tanstack/vue-table
+- **Data Tables**: @tanstack/vue-table
 - **Routing**: Vue Router
+- **Utilities**: @vueuse/core
+- **Icons**: Lucide Vue Next
 - **Package Manager**: Bun (primary) / npm / yarn / pnpm compatible
-- **Development**: Hot Module Replacement (HMR) via Vite
+- **Development**: Hot Module Replacement (HMR) via Vite + Vue DevTools
 
 ## Project Structure Guidelines
 
 ```
 src/
 ├── components/
-│   ├── ui/                 # Reka UI + Shadcn/UI components
+│   ├── ui/                 # Reka UI + Shadcn/UI components (30+ components)
 │   └── [custom]/           # Custom project components
+├── composables/            # Vue composables (e.g., useIsMobile)
 ├── views/                  # Page-level components
 ├── router/                 # Vue Router configuration
 ├── stores/                 # Pinia stores
-├── lib/                    # Utility functions
+├── lib/                    # Utility functions (utils.ts)
 ├── assets/                 # Static assets
-├── global.css              # Global styles (consolidated)
+├── global.css              # Global styles (consolidated CSS)
 └── main.ts                 # Application entry point
 ```
 
@@ -41,23 +44,36 @@ To ensure consistency and leverage the chosen stack effectively, please follow t
 
 ### 1. UI Components
 
-- **Primary Choice**: Always prioritize using components from the `src/components/ui/` directory (Reka UI + Shadcn/UI Vue components).
-- **Component Library**: The template includes a comprehensive UI library with accessibility features built-in.
+- **Primary Choice**: Always prioritize using components from the `src/components/ui/` directory (Reka UI v2+ based components).
+- **Component Library**: Reka UI (formerly Radix Vue) provides 30+ accessible, unstyled primitive components with full logic and accessibility built-in.
+- **Advantages of Reka UI**:
+  - **Accessibility**: WCAG compliant components with proper ARIA attributes
+  - **Unstyled**: Complete styling freedom with Tailwind CSS
+  - **TypeScript**: Full TypeScript support with excellent type inference
+  - **Active Ecosystem**: Powers Shadcn Vue, Nuxt UI, and many production apps
+  - **Vue-Native**: Built specifically for Vue 3, not a port
+  - **Composable Architecture**: Leverages Vue's Composition API properly
 - **Custom Components**: If a required component is not available in the UI library, create a new component in `src/components/` following the established patterns.
-- **Composition**: Use Reka UI primitives for accessibility and Tailwind CSS for styling.
+- **Styling**: Use Reka UI primitives for accessibility and Tailwind CSS for styling.
 - **Avoid**: Introducing new, third-party UI component libraries without discussion.
+- **Documentation**: Refer to [Reka UI docs](https://reka-ui.com) for component APIs and examples.
 
 ### 2. Styling
 
 - **Primary Choice**: Exclusively use Tailwind CSS utility classes for all styling.
-- **Configuration**: Use the TypeScript configuration in `tailwind.config.ts`.
+- **Configuration**: Use the TypeScript configuration in `tailwind.config.ts` with:
+  - Class-based dark mode (`dark:` prefix)
+  - Extended color palette using CSS variables
+  - Animation keyframes and tailwindcss-animate plugin
+  - Custom design tokens for consistent theming
 - **Global Styles**: Reserve `src/global.css` for:
   - Tailwind directives (`@tailwind base`, `@tailwind components`, `@tailwind utilities`)
   - CSS custom properties and design tokens
-  - Global base styles and resets
+  - Global base styles and resets (html, body margin/padding)
   - Minimal component-agnostic styles
 - **Design System**: Leverage the configured design tokens for colors, spacing, and typography.
 - **Dark Mode**: Use class-based dark mode (`dark:` prefix) as configured.
+- **Responsive Design**: Use Tailwind's responsive prefixes (`sm:`, `md:`, `lg:`, `xl:`, `2xl:`).
 - **CSS-in-JS**: Do not use CSS-in-JS libraries (e.g., Styled Components, Emotion).
 - **PostCSS**: Use the configured PostCSS setup with autoprefixer.
 
@@ -105,9 +121,17 @@ To ensure consistency and leverage the chosen stack effectively, please follow t
 ### 9. Custom Composables
 
 - **Location**: Custom Vue composables should be placed in the `src/composables/` directory.
-- **Naming**: Use the `use` prefix (e.g., `useMobile`, `useAuth`).
+- **Naming**: Use the `use` prefix (e.g., `useIsMobile`, `useAuth`, `useLocalStorage`).
 - **TypeScript**: Ensure proper typing for inputs, outputs, and return values.
 - **Reusability**: Design composables to be reusable across components.
+- **Available Composables**:
+  - `useIsMobile()`: Reactive mobile/desktop detection with 768px breakpoint
+  - More composables can be added following the same patterns
+- **Best Practices**:
+  - Use Vue's reactivity system (`ref`, `reactive`, `computed`)
+  - Proper lifecycle management (`onMounted`, `onUnmounted`)
+  - Return computed properties for reactive values
+  - Handle SSR compatibility when applicable
 
 ### 10. TypeScript Best Practices
 
@@ -139,12 +163,14 @@ To ensure consistency and leverage the chosen stack effectively, please follow t
 
 ### Package Management
 
-- **Primary**: Use Bun for package management and script execution.
+- **Primary**: Use Bun for package management and script execution for optimal performance.
 - **Compatibility**: Ensure compatibility with npm, yarn, and pnpm.
 - **Commands**:
-  - `bun dev` - Development server
-  - `bun run build` - Production build with type checking
-  - `bun run preview` - Preview production build
+  - `bun dev` / `pnpm run dev` - Development server (runs on http://localhost:5173)
+  - `bun run build` / `pnpm run build` - Production build with type checking
+  - `bun run preview` / `pnpm run preview` - Preview production build
+  - `pnpm run type-check` - TypeScript type checking
+- **Version Requirements**: Node.js ^20.19.0 || >=22.12.0 as specified in package.json engines
 
 ### Code Quality
 
@@ -171,10 +197,14 @@ To ensure consistency and leverage the chosen stack effectively, please follow t
 ### Starting Point
 
 - The template provides a minimal starting point with:
-  - Centered "Starting page" content
-  - Clean footer component
-  - Responsive layout
-  - Complete UI component library
+  - Centered "Starting page" content with responsive layout
+  - Clean footer component (MadeWithDyad) with proper centering
+  - Responsive layout with flexbox-based App.vue structure
+  - Complete UI component library (30+ Reka UI components)
+  - CSS reset and global styles for consistent cross-browser rendering
+  - Dark/light mode support with class-based theming
+  - Mobile-responsive design with `useIsMobile` composable
+  - TypeScript configuration with proper module resolution
 
 ### Customization
 
