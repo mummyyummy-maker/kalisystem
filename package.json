@@ -34,6 +34,7 @@
     "@dyad-sh/react-vite-component-tagger": "^0.8.0",
     "@tsconfig/node22": "^22.0.2",
     "@types/node": "^22.16.5",
+    "@types/papaparse": "^5.3.16",
     "@vitejs/plugin-vue": "^6.0.1",
     "@vue/tsconfig": "^0.7.0",
     "autoprefixer": "^10.4.21",
